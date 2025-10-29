@@ -1,0 +1,11 @@
+﻿**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.db
+**/.DS_Store
+**/.env
+
+client/node_modules
+
+server/.idea/
+server/logs/
