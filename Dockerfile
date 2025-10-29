@@ -13,7 +13,6 @@ COPY server/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY server/app.py .
-COPY server/init_db.py .
 COPY server/constants.py .
 COPY server/database/ ./database/
 COPY server/data/.gitkeep ./data/

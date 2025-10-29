@@ -1,14 +1,13 @@
-﻿import os
-import requests
+﻿import requests
 import pyarrow as pa
 import pyarrow.parquet as pq
 import csv
 import os
 import zipfile
-import requests
 from collections import defaultdict
 
 from database.mysql_connector import DATA_FOLDER
+from utils.logging_utils import logger
 
 
 urls = [
@@ -104,6 +103,7 @@ def get_food_nutrients(tmp_dir, nutrient_map):
 
 def write_data_to_pq(food_name_map, food_nutrients, portion_data, schema, writer):
     batch = []
+    b_ctr = 0
     seen_names = set()
 
     for fdc_id, name in sorted(list(food_name_map.items()), key=lambda x: -len(food_nutrients.get(x[0], {}))):
@@ -125,6 +125,9 @@ def write_data_to_pq(food_name_map, food_nutrients, portion_data, schema, writer
             table = pa.Table.from_pylist(batch, schema=schema)
             writer.write_table(table)
             batch.clear()
+            b_ctr += 1
+            if b_ctr % 10 == 0:
+                logger.info(f"\t\t{b_ctr} batches preprocessed")
 
     if batch:
         table = pa.Table.from_pylist(batch, schema=schema)
@@ -136,7 +139,8 @@ def init_usdafdc_data():
     if os.path.exists(F_OUTPUT_FILE) and os.path.exists(SRL_OUTPUT_FILE) :
         return
 
-    for kw, url in urls:
+    for df_idx, (kw, url) in enumerate(urls):
+        logger.info(f"\tClearing datafile {df_idx + 1} / {len(urls)}")
         tmp_dir = os.path.join(DATA_FOLDER, kw)
         download_file(url, tmp_dir)
 

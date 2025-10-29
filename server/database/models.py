@@ -141,11 +141,15 @@ try:
                     (init_usdafdc_data, [SRL_OUTPUT_FILE, F_OUTPUT_FILE], delete_usdafdc_pq)
                 ]
 
-                for init_func, data_files, delete_func in init_sequence:
+                for ds_idx, (init_func, data_files, delete_func) in enumerate(init_sequence):
+                    logger.info(f"Processing dataset {ds_idx+1} / {len(init_sequence)}")
                     init_func()
 
-                    for data_file in data_files:
+                    for df_idx, data_file in enumerate(data_files):
+                        logger.info(f"\tProcessing datafile {df_idx + 1} / {len(data_files)}")
                         reader = pq.ParquetFile(data_file)
+                        batches = reader.num_row_groups
+                        b_idx = 1
 
                         for batch in reader.iter_batches(batch_size=BATCH_SIZE):
                             rows = batch.to_pylist()
@@ -165,6 +169,9 @@ try:
 
                             session.bulk_save_objects(objects)
                             session.commit()
+                            if b_idx % 10 == 0:
+                                logger.info(f"\t\t{b_idx} / {batches} batches processed")
+                            b_idx += 1
 
                     delete_func()
 except Timeout as e:

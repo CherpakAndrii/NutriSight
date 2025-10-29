@@ -103,7 +103,8 @@ def process_parquet(input_path, output_path, batch_size=5000):
     batches = reader.num_row_groups
 
     for batch in reader.iter_batches(batch_size=batch_size):
-        logger.info(f"\r{idx} / {batches}", end="")
+        if idx % 10 == 0:
+            logger.info(f"\t{idx} / {batches} batches preprocessed")
         batch_dict = batch.to_pylist()
         rows = []
         for row in batch_dict:
