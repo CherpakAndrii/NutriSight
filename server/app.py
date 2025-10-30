@@ -10,6 +10,7 @@ import uvloop
 import asyncio
 
 from routers.auth_router import auth_router
+from routers.user_profile_router import user_profile_router
 from routers.additional_router import additional_router
 from constants import SERVER_PORT, SERVER_WORKERS
 from utils.launch_utils import configure_logging, configure_directories
@@ -50,8 +51,9 @@ app.add_middleware(
 
 app.add_middleware(GZipMiddleware, minimum_size=4096)
 
-
+# app.mount("/static", StaticFiles(directory="frontend/static", html=True), name="static")
 app.include_router(auth_router, prefix="/api/auth", tags=["Authentication"])
+app.include_router(user_profile_router, prefix="/api/profile", tags=["Profile"])
 app.include_router(additional_router, tags=["Additional"])
 
 

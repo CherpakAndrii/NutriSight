@@ -69,7 +69,7 @@ def validate_req_auth(request: Request) -> tuple[int | None, int | None]:
 def authenticate_user(email: str, password: str) -> tuple[dict, str]:
     with Session() as session:
         user = session.query(User).filter(
-            User.email == email, User.password == hash_password(password)).first()
+            User.email == email, User.auth_provider != AuthProvider.Google, User.password == hash_password(password)).first()
         if user is not None:
             return {"success": True, "user_id": user.user_id}, generate_auth_token(user.user_id)
         return {"success": False, "user_id": 0}, ""
@@ -86,6 +86,10 @@ def google_authenticate_user(id_tkn: str) -> tuple[dict, str]:
         if user is None:
             user = User(email=email, auth_provider=AuthProvider.Google)
             session.add(user)
+            session.commit()
+            session.refresh(user)
+        elif user.auth_provider == AuthProvider.Local:
+            user.auth_provider = AuthProvider.Both
             session.commit()
             session.refresh(user)
 

@@ -16,10 +16,10 @@ Base = declarative_base()
 
 
 user_intolerance = Table(
-    "student_course",
+    "user_intolerance",
     Base.metadata,
-    Column("user_id", ForeignKey("users.user_id"), primary_key=True),
-    Column("intolerance_id", ForeignKey("intolerances.intolerance_id"), primary_key=True)
+    Column("user_id", ForeignKey("users.user_id", ondelete='CASCADE', onupdate='CASCADE'), primary_key=True),
+    Column("intolerance_id", ForeignKey("intolerances.intolerance_id", ondelete='CASCADE', onupdate='CASCADE'), primary_key=True)
 )
 
 
@@ -27,35 +27,39 @@ class User(Base):
     __tablename__ = "users"
 
     user_id = Column(Integer, primary_key=True)
-    email = Column(String(50), nullable=False, unique=True)
+    email = Column(String(1000), nullable=False, unique=True)
     password = Column(String(50), nullable=True)
     auth_provider = Column(Enum(AuthProvider), default=AuthProvider.Local)
-    name = Column(String(50), nullable=True)
+    name = Column(String(100), nullable=True)
     age = Column(Integer, nullable=True)
-    sex = Column(Enum(Sex), nullable=True)
-    weight = Column(Integer, nullable=True)
-    height = Column(Integer, nullable=True)
-    goal_calories = Column(Integer, nullable=True)
-    goal_protein = Column(Integer, nullable=True)
-    goal_fat = Column(Integer, nullable=True)
-    goal_carbs = Column(Integer, nullable=True)
+    sex = Column(Enum(Sex), nullable=True, default=Sex.PreferNotToSay)
+    weight = Column(Float, nullable=True)
+    height = Column(Float, nullable=True)
+    goal_calories = Column(Float, nullable=True)
+    goal_protein = Column(Float, nullable=True)
+    goal_fat = Column(Float, nullable=True)
+    goal_carbs = Column(Float, nullable=True)
     diet_type = Column(Enum(DietType), nullable=True)
 
     intolerances = relationship(
         "Intolerance",
         secondary=user_intolerance,
-        back_populates="users"
+        back_populates="users",
+        passive_deletes=True
     )
-    meals = relationship("UserMeal", back_populates="user")
-    ingredients = relationship("UserIngredient", back_populates="user")
-    recipes = relationship("UserRecipe", back_populates="user")
+    meals = relationship("UserMeal", back_populates="user", passive_deletes=True)
+    ingredients = relationship("UserIngredient", back_populates="user", passive_deletes=True)
+    recipes = relationship("UserRecipe", back_populates="user", passive_deletes=True)
+
+    def to_dict(self):
+        return {key: getattr(self, key) for key in ['user_id', 'email', 'auth_provider', 'name', 'age', 'sex', 'weight', 'height', 'goal_calories', 'goal_protein', 'diet_type']} | {'intolerances': [i.to_dict() for i in self.intolerances]}
 
 
 class Intolerance(Base):
     __tablename__ = "intolerances"
 
     intolerance_id = Column(Integer, primary_key=True)
-    intolerance_name = Column(String(20), nullable=False, unique=True)
+    intolerance_name = Column(String(50), nullable=False, unique=True)
 
     users = relationship(
         "User",
@@ -63,18 +67,21 @@ class Intolerance(Base):
         back_populates="intolerances"
     )
 
+    def to_dict(self):
+        return {key: getattr(self, key) for key in ['intolerance_id', 'intolerance_name']}
+
 
 class ProductTemplate(Base):
     __tablename__ = "product_templates"
 
     product_id = Column(Integer, primary_key=True)
-    name = Column(String(200), index=True, nullable=False)
+    name = Column(String(500), index=True, nullable=False)
     default_calories = Column(Float, nullable=True)
     default_proteins = Column(Float, nullable=True)
     default_fats = Column(Float, nullable=True)
     default_carbs = Column(Float, nullable=True)
     default_portion_grams = Column(Float, nullable=True)
-    image_url = Column(String(250), nullable=True)
+    image_url = Column(String(350), nullable=True)
 
 
 class UserMeal(Base):
@@ -82,7 +89,7 @@ class UserMeal(Base):
 
     meal_id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("users.user_id", ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
-    name = Column(String(20), nullable=False)
+    name = Column(String(500), nullable=False)
     actual_calories = Column(Float, nullable=True)
     actual_proteins = Column(Float, nullable=True)
     actual_fats = Column(Float, nullable=True)
@@ -100,7 +107,7 @@ class UserIngredient(Base):
 
     ingredient_id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("users.user_id", ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
-    name = Column(String(20), nullable=False)
+    name = Column(String(200), nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.datetime.now)
     source_type = Column(Enum(SourceType), nullable=False)
     quantity_available_grams = Column(Integer, nullable=False)
@@ -113,11 +120,11 @@ class UserRecipe(Base):
 
     recipe_id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("users.user_id", ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
-    name = Column(String(20), nullable=False)
+    name = Column(String(200), nullable=False)
 
     ingredients = Column(JSON, nullable=False) # JSON [{name, amount, unit}]
 
-    instructions = Column(String(1000), nullable=False)
+    instructions = Column(String(2048), nullable=False)
     calories = Column(Float, nullable=False)
     protein = Column(Float, nullable=False)
     fat = Column(Float, nullable=False)
