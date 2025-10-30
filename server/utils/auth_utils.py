@@ -2,11 +2,14 @@ from hashlib import shake_256
 from time import time
 
 import jwt
-from fastapi import Request
+from fastapi import Request, HTTPException
+from google.oauth2 import id_token
+from google.auth.transport import requests
 
-from constants import JWT_SECRET, JWT_ALGORITHM, JWT_EXPIRATION, JWT_REFRESH
+from constants import JWT_SECRET, JWT_ALGORITHM, JWT_EXPIRATION, JWT_REFRESH, VERIFY_EXPIRATION, GOOGLE_CLIENT_ID
 from database.mysql_connector import Session
 from database.models import User
+from database.enums import AuthProvider
 
 
 def hash_password(password: str) -> str:
@@ -16,6 +19,12 @@ def hash_password(password: str) -> str:
 def generate_auth_token(user_id: int, expires_in: int = JWT_EXPIRATION) -> str:
     return jwt.encode(
             {'id': user_id, "exp": time() + expires_in},
+            JWT_SECRET, algorithm=JWT_ALGORITHM)
+
+
+def generate_email_verify_token(login: str, password: str, expires_in: int = VERIFY_EXPIRATION) -> str:
+    return jwt.encode(
+            {'login': login, 'password': password, 'exp': time() + expires_in},
             JWT_SECRET, algorithm=JWT_ALGORITHM)
 
 
@@ -30,6 +39,20 @@ def verify_auth_token(request: Request) -> tuple[int|None, str|None]:
 
         new_token = None if expires_in > JWT_REFRESH else generate_auth_token(user_id)
         return user_id, new_token
+    except:
+        return None, None
+
+
+def verify_email_token(verif_token: str) -> tuple[str|None, str|None]:
+    try:
+        data = jwt.decode(verif_token, JWT_SECRET, JWT_ALGORITHM)
+        email = data['login']
+        password = data['password']
+        expires_in = data['exp'] - time()
+        if expires_in < 0:
+            return None, None
+
+        return email, password
     except:
         return None, None
 
@@ -50,3 +73,46 @@ def authenticate_user(email: str, password: str) -> tuple[dict, str]:
         if user is not None:
             return {"success": True, "user_id": user.user_id}, generate_auth_token(user.user_id)
         return {"success": False, "user_id": 0}, ""
+
+def google_authenticate_user(id_tkn: str) -> tuple[dict, str]:
+    try:
+        payload = id_token.verify_oauth2_token(id_tkn, requests.Request(), GOOGLE_CLIENT_ID)
+        email = payload["email"]
+    except Exception:
+        raise HTTPException(status_code=401, detail="Invalid Google token")
+
+    with Session() as session:
+        user = session.query(User).filter(User.email == email).first()
+        if user is None:
+            user = User(email=email, auth_provider=AuthProvider.Google)
+            session.add(user)
+            session.commit()
+            session.refresh(user)
+
+        return {"success": True, "user_id": user.user_id}, generate_auth_token(user.user_id)
+
+def can_create_acc(login: str) -> bool:
+    with Session() as session:
+        user = session.query(User).filter(User.email == login).first()
+
+    return not user
+
+
+def create_acc(verif_token: str) -> tuple[dict, str]:
+    email, password = verify_email_token(verif_token)
+
+    with Session() as session:
+        user = session.query(User).filter(User.email == email).first()
+
+    if user:
+
+        return {"success": False, "user_id": None}, ""
+
+    user = User(email=email, auth_provider=AuthProvider.Local, password=hash_password(password))
+
+    with Session() as session:
+        session.add(user)
+        session.commit()
+        session.refresh(user)
+
+    return {"success": True, "user_id": user.user_id}, generate_auth_token(user.user_id)

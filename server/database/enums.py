@@ -7,6 +7,12 @@ class Sex(enum.Enum):
     PreferNotToSay = 2
 
 
+class AuthProvider(enum.Enum):
+    Local = 0
+    Google = 1
+    Both = 2
+
+
 class MealTime(enum.Enum):
     Breakfast = 0
     Lunch = 1

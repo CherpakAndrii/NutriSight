@@ -6,15 +6,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from contextlib import asynccontextmanager
 from filelock import FileLock, Timeout
-# import uvloop
+import uvloop
 import asyncio
 
+from routers.auth_router import auth_router
 from routers.additional_router import additional_router
 from constants import SERVER_PORT, SERVER_WORKERS
 from utils.launch_utils import configure_logging, configure_directories
 
 
-# asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
 @asynccontextmanager
 async def lifespan(application: FastAPI):
@@ -28,7 +29,6 @@ async def lifespan(application: FastAPI):
     except Timeout:
         pass
     yield
-
 
 
 app = FastAPI(lifespan=lifespan)
@@ -51,11 +51,9 @@ app.add_middleware(
 app.add_middleware(GZipMiddleware, minimum_size=4096)
 
 
+app.include_router(auth_router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(additional_router, tags=["Additional"])
 
 
 if __name__ == '__main__':
     uvicorn.run(app, host='0.0.0.0', port=SERVER_PORT)
-    # from utils.healthcheck_utils.healthcheck import perform_healthcheck
-
-    # asyncio.run(perform_healthcheck("YWNoZXJwYWs6Y2FycGV0IHNhbGUgbW9uZXkgZGV2aWNl", "Nemo_Tile", None))

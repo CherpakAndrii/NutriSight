@@ -28,17 +28,18 @@ class User(Base):
 
     user_id = Column(Integer, primary_key=True)
     email = Column(String(50), nullable=False, unique=True)
-    password = Column(String(50), nullable=False)
+    password = Column(String(50), nullable=True)
+    auth_provider = Column(Enum(AuthProvider), default=AuthProvider.Local)
     name = Column(String(50), nullable=True)
     age = Column(Integer, nullable=True)
-    sex = Column(Enum(Sex), nullable=False)
+    sex = Column(Enum(Sex), nullable=True)
     weight = Column(Integer, nullable=True)
     height = Column(Integer, nullable=True)
     goal_calories = Column(Integer, nullable=True)
     goal_protein = Column(Integer, nullable=True)
     goal_fat = Column(Integer, nullable=True)
     goal_carbs = Column(Integer, nullable=True)
-    diet_type = Column(Enum(DietType), nullable=False)
+    diet_type = Column(Enum(DietType), nullable=True)
 
     intolerances = relationship(
         "Intolerance",
