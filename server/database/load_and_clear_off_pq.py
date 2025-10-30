@@ -114,7 +114,7 @@ def process_parquet(input_path, output_path, batch_size=5000):
             seen_names.add(name)
             nutr = row.get("nutriments", [])
             rows.append({
-                "name": name,
+                "name": name[:500],
                 "default_calories": extract_value(nutr, "energy-kcal"),
                 "default_proteins": extract_value(nutr, "proteins"),
                 "default_fats": extract_value(nutr, "fat"),

@@ -111,7 +111,7 @@ def write_data_to_pq(food_name_map, food_nutrients, portion_data, schema, writer
             continue
         vals = food_nutrients.get(fdc_id, {})
         row = {
-            'name': name,
+            'name': name[:500],
             'default_calories': vals.get("calories"),
             'default_proteins': vals.get("proteins"),
             'default_fats': vals.get("fats"),

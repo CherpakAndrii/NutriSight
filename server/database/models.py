@@ -3,6 +3,7 @@ import datetime
 import pyarrow.parquet as pq
 from sqlalchemy import Column, Integer, Float, String, Enum, ForeignKey, DateTime, Table, JSON
 from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.inspection import inspect
 from filelock import FileLock, Timeout
 
 from database.enums import *
@@ -83,6 +84,9 @@ class ProductTemplate(Base):
     default_portion_grams = Column(Float, nullable=True)
     image_url = Column(String(350), nullable=True)
 
+    def to_dict(self):
+        return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
+
 
 class UserMeal(Base):
     __tablename__ = "user_meals"
@@ -100,6 +104,9 @@ class UserMeal(Base):
     source_type = Column(Enum(SourceType), nullable=False)
 
     user = relationship("User", back_populates="meals")
+
+    def to_dict(self):
+        return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs if c.key != 'user'}
 
 
 class UserIngredient(Base):

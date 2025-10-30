@@ -34,7 +34,7 @@ def delete_my_profile(deleted_user_id: int, user_id: int = Depends(get_current_u
 
 
 @user_profile_router.put('/name', response_model=ModifyUserProfileResp)
-async def change_name(data: ChangeNameData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
+def change_name(data: ChangeNameData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
     user_profile = session.get(User, user_id)
     if user_profile:
         user_profile.name = data.name
@@ -46,7 +46,7 @@ async def change_name(data: ChangeNameData, user_id: int = Depends(get_current_u
 
 
 @user_profile_router.put('/age', response_model=ModifyUserProfileResp)
-async def change_age(data: ChangeAgeData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
+def change_age(data: ChangeAgeData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
     user_profile = session.get(User, user_id)
     if user_profile:
         user_profile.age = data.age
@@ -58,7 +58,7 @@ async def change_age(data: ChangeAgeData, user_id: int = Depends(get_current_use
 
 
 @user_profile_router.put('/password', response_model=ModifyUserProfileResp)
-async def change_password(data: ChangePasswordData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
+def change_password(data: ChangePasswordData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
     user_profile = session.get(User, user_id)
     if user_profile:
         if user_profile.auth_provider != AuthProvider.Google and hash_password(data.prev_pwd) != user_profile.password:
@@ -76,7 +76,7 @@ async def change_password(data: ChangePasswordData, user_id: int = Depends(get_c
 
 
 @user_profile_router.put('/sex', response_model=ModifyUserProfileResp)
-async def change_sex(data: ChangeSexData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
+def change_sex(data: ChangeSexData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
     user_profile = session.get(User, user_id)
     if user_profile:
         user_profile.sex = data.sex
@@ -88,7 +88,7 @@ async def change_sex(data: ChangeSexData, user_id: int = Depends(get_current_use
 
 
 @user_profile_router.put('/diet_type', response_model=ModifyUserProfileResp)
-async def change_diet_type(data: ChangeDietTypeData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
+def change_diet_type(data: ChangeDietTypeData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
     user_profile = session.get(User, user_id)
     if user_profile:
         user_profile.diet_type = data.dietType
@@ -100,7 +100,7 @@ async def change_diet_type(data: ChangeDietTypeData, user_id: int = Depends(get_
 
 
 @user_profile_router.put('/weight', response_model=ModifyUserProfileResp)
-async def change_weight(data: ChangeNumericFieldData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
+def change_weight(data: ChangeNumericFieldData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
     user_profile = session.get(User, user_id)
     if user_profile:
         user_profile.weight = data.value
@@ -112,7 +112,7 @@ async def change_weight(data: ChangeNumericFieldData, user_id: int = Depends(get
 
 
 @user_profile_router.put('/height', response_model=ModifyUserProfileResp)
-async def change_height(data: ChangeNumericFieldData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
+def change_height(data: ChangeNumericFieldData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
     user_profile = session.get(User, user_id)
     if user_profile:
         user_profile.height = data.value
@@ -124,7 +124,7 @@ async def change_height(data: ChangeNumericFieldData, user_id: int = Depends(get
 
 
 @user_profile_router.put('/goal_calories', response_model=ModifyUserProfileResp)
-async def change_goal_calories(data: ChangeNumericFieldData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
+def change_goal_calories(data: ChangeNumericFieldData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
     user_profile = session.get(User, user_id)
     if user_profile:
         user_profile.goal_calories = data.value
@@ -136,7 +136,7 @@ async def change_goal_calories(data: ChangeNumericFieldData, user_id: int = Depe
 
 
 @user_profile_router.put('/goal_protein', response_model=ModifyUserProfileResp)
-async def change_goal_protein(data: ChangeNumericFieldData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
+def change_goal_protein(data: ChangeNumericFieldData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
     user_profile = session.get(User, user_id)
     if user_profile:
         user_profile.goal_protein = data.value
@@ -148,7 +148,7 @@ async def change_goal_protein(data: ChangeNumericFieldData, user_id: int = Depen
 
 
 @user_profile_router.put('/goal_fat', response_model=ModifyUserProfileResp)
-async def change_goal_fat(data: ChangeNumericFieldData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
+def change_goal_fat(data: ChangeNumericFieldData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
     user_profile = session.get(User, user_id)
     if user_profile:
         user_profile.goal_fat = data.value
@@ -160,7 +160,7 @@ async def change_goal_fat(data: ChangeNumericFieldData, user_id: int = Depends(g
 
 
 @user_profile_router.put('/goal_carbs', response_model=ModifyUserProfileResp)
-async def change_goal_carbs(data: ChangeNumericFieldData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
+def change_goal_carbs(data: ChangeNumericFieldData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
     user_profile = session.get(User, user_id)
     if user_profile:
         user_profile.goal_carbs = data.value
