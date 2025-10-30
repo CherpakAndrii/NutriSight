@@ -3,7 +3,7 @@ import requests
 import pyarrow as pa
 import pyarrow.parquet as pq
 
-from database.mysql_connector import DATA_FOLDER
+from database.database_connector import DATA_FOLDER
 from utils.logging_utils import logger
 
 

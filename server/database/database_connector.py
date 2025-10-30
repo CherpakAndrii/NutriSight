@@ -20,4 +20,11 @@ DATA_FOLDER = join(dirname(dirname(abspath(__file__))), "data")
 engine = create_engine(DATABASE_URL)
 Session = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
+def get_db_session():
+    session = Session()
+    try:
+        yield session
+    finally:
+        session.close()
+
 # session = Session()

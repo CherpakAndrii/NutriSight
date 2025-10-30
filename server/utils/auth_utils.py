@@ -7,7 +7,7 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 
 from constants import JWT_SECRET, JWT_ALGORITHM, JWT_EXPIRATION, JWT_REFRESH, VERIFY_EXPIRATION, GOOGLE_CLIENT_ID
-from database.mysql_connector import Session
+from database.database_connector import Session
 from database.models import User
 from database.enums import AuthProvider
 
@@ -64,6 +64,12 @@ def validate_req_auth(request: Request) -> tuple[int | None, int | None]:
 
         return (None, 401) if user_id is None  else (user_id, None)
     return None, 401
+
+def get_current_user_id(request: Request):
+    user_id, error_code = validate_req_auth(request)
+    if user_id is None:
+        raise HTTPException(error_code)
+    return user_id
 
 
 def authenticate_user(email: str, password: str) -> tuple[dict, str]:

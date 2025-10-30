@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 
-from utils.auth_utils import authenticate_user, generate_email_verify_token, google_authenticate_user, verify_auth_token, validate_req_auth, can_create_acc, create_acc
+from utils.auth_utils import authenticate_user, generate_email_verify_token, google_authenticate_user, verify_auth_token, can_create_acc, create_acc
 from utils.email_utils import send_verification_email
 from routers.req_data_types.auth_req_data_types import Credentials, VerifyTokenData, GoogleSignUpData
 from routers.res_data_types.auth_res_data_types import LoginResp

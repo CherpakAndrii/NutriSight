@@ -6,7 +6,7 @@ import os
 import zipfile
 from collections import defaultdict
 
-from database.mysql_connector import DATA_FOLDER
+from database.database_connector import DATA_FOLDER
 from utils.logging_utils import logger
 
 

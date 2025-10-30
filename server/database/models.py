@@ -6,7 +6,7 @@ from sqlalchemy.orm import declarative_base, relationship
 from filelock import FileLock, Timeout
 
 from database.enums import *
-from database.mysql_connector import engine, Session
+from database.database_connector import engine, Session
 from database.load_and_clear_off_pq import init_off_data, delete_off_pq, OFF_OUTPUT_FILE, BATCH_SIZE
 from database.load_and_clear_usdafdc import init_usdafdc_data, delete_usdafdc_pq, SRL_OUTPUT_FILE, F_OUTPUT_FILE
 from utils.logging_utils import logger

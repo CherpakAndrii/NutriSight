@@ -1,33 +1,29 @@
 import os
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request, Depends
 from fastapi.responses import FileResponse
 
 from constants import log_dir
-from utils.auth_utils import validate_req_auth
+from utils.auth_utils import get_current_user_id
 from routers.res_data_types.res_data_types import MessageResponse
 
 additional_router = APIRouter()
 
 @additional_router.get('/api/logs/{level}', include_in_schema=True)
-async def logs(request: Request, level: str, lines: int, include_older: bool = False):
-    user_id, error_code = validate_req_auth(request)
-    if user_id is not None:
-        filepath = f'{log_dir}/{level}.log'
-        levels = {'debug', 'info', 'warning', 'error', 'critical', 'access', 'error_specific'}
-        if level in levels and os.path.exists(filepath):
-            with open(filepath) as f:
-                content = f.readlines()
-            if include_older and len(content) < lines:
-                for older_file in sorted([fl for fl in os.listdir(log_dir) if fl.startswith(f"{level}.log.")], reverse=True):
-                    with open(f'{log_dir}/{older_file}') as f:
-                        content = f.readlines() + content
-                    if len(content) >= lines:
-                        break
-            return {"level": level, 'log': content[-lines:]}
-        raise HTTPException(404)
-    else:
-        raise HTTPException(error_code)
+async def logs(level: str, lines: int, include_older: bool = False, user_id: int = Depends(get_current_user_id)):
+    filepath = f'{log_dir}/{level}.log'
+    levels = {'debug', 'info', 'warning', 'error', 'critical', 'access', 'error_specific'}
+    if level in levels and os.path.exists(filepath):
+        with open(filepath) as f:
+            content = f.readlines()
+        if include_older and len(content) < lines:
+            for older_file in sorted([fl for fl in os.listdir(log_dir) if fl.startswith(f"{level}.log.")], reverse=True):
+                with open(f'{log_dir}/{older_file}') as f:
+                    content = f.readlines() + content
+                if len(content) >= lines:
+                    break
+        return {"level": level, 'log': content[-lines:]}
+    raise HTTPException(404)
 
 
 @additional_router.get('/api/{cat_num}/{filename}', include_in_schema=False)
