@@ -1,11 +1,12 @@
-﻿from fastapi import APIRouter, Depends
+﻿from fastapi import APIRouter, Depends, UploadFile
 from sqlalchemy import select, func
 
-from database.database_connector import get_db_session
+from database.database_connector import get_db_session, get_async_db_session
 from routers.req_data_types.food_log_req_data_types import NewFoodLogData, UpdateFoodLogData, ProductTemplateSearchData
 from utils.auth_utils import get_current_user_id
+from utils.ai_utils import analyze_dish
 from database.models import UserMeal, ProductTemplate
-from routers.res_data_types.food_log_res_data_types import GetFoodLogResp, UpdateFoodLogResp, TemplateSearchResp
+from routers.res_data_types.food_log_res_data_types import GetFoodLogResp, UpdateFoodLogResp, TemplateSearchResp, AISuggestionResp
 
 
 food_log_router = APIRouter()
@@ -68,3 +69,16 @@ def search_prod_template(data: ProductTemplateSearchData, user_id: int = Depends
 
     result = session.execute(stmt)
     return {"results": [r.to_dict() for r in result.scalars().all()]}
+
+@food_log_router.post('/recognize', response_model=AISuggestionResp)
+async def recognize_meal(file: UploadFile, user_id: int = Depends(get_current_user_id)):
+    dish = await analyze_dish(file)
+    nutrients = dish.get('nutrients_per_100g', {})
+    return {
+        "name": dish.get('name'),
+        "default_calories": float(nutrients.get('kcal')) if nutrients.get('kcal') else None,
+        "default_proteins": float(nutrients.get('protein')) if nutrients.get('protein') else None,
+        "default_fats": float(nutrients.get('fat')) if nutrients.get('fat') else None,
+        "default_carbs": float(nutrients.get('carbs')) if nutrients.get('carbs') else None,
+        "default_portion_grams": float(dish.get('approx_weight_grams')) if dish.get('approx_weight_grams') else None
+    }

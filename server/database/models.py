@@ -4,6 +4,7 @@ import pyarrow.parquet as pq
 from sqlalchemy import Column, Integer, Float, String, Enum, ForeignKey, DateTime, Table, JSON
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.inspection import inspect
+from sqlalchemy.dialects.postgresql import JSONB
 from filelock import FileLock, Timeout
 
 from database.enums import *
@@ -121,6 +122,9 @@ class UserIngredient(Base):
 
     user = relationship("User", back_populates="ingredients")
 
+    def to_dict(self):
+        return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
+
 
 class UserRecipe(Base):
     __tablename__ = "user_recipes"
@@ -129,9 +133,9 @@ class UserRecipe(Base):
     user_id = Column(Integer, ForeignKey("users.user_id", ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
     name = Column(String(200), nullable=False)
 
-    ingredients = Column(JSON, nullable=False) # JSON [{name, amount, unit}]
+    ingredients = Column(JSONB, nullable=False) # JSON [{name, amount, unit}]
 
-    instructions = Column(String(2048), nullable=False)
+    instructions = Column(String(8192), nullable=False)
     calories = Column(Float, nullable=False)
     protein = Column(Float, nullable=False)
     fat = Column(Float, nullable=False)

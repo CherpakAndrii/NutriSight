@@ -7,12 +7,14 @@ from database.enums import Sex, DietType
 class ChangeAgeData(__BaseModelWithConfig):
     age: int
 
+
 class ChangeNumericFieldData(__BaseModelWithConfig):
     value: float
 
 
 class ChangeNameData(__BaseModelWithConfig):
     name: str
+
 
 class ChangePasswordData(__BaseModelWithConfig):
     prev_pwd: Optional[str] = None
@@ -27,3 +29,5 @@ class ChangeDietTypeData(__BaseModelWithConfig):
     dietType: DietType
 
 
+class AddIntoleranceData(__BaseModelWithConfig):
+    name: str

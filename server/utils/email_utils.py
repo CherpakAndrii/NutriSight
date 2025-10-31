@@ -4,7 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from constants import SMTP_USER, SMTP_PASSWORD, SMTP_SERVER, SMTP_PORT
 
 def send_verification_email(to_email: str, token: str):
-    verification_link = f"http://localhost:8000/api/auth/verify/{token}" # TODOauth
+    verification_link = f"http://localhost:8005/api/auth/verify/{token}" # TODO redirect to frontend that will do a post request
     subject = "Verify your email"
     body = f"""
     <p>Hi!</p>

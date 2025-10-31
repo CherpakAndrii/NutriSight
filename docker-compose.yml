@@ -3,19 +3,19 @@
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: food_tracker_backend
+    container_name: nutri_sight_backend
     env_file: .env
     ports:
       - "8005:8005"
     depends_on:
       - db
     volumes:
-      - food_tracker_data_volume:/app/data
+      - nutri_sight_data_volume:/app/data
     restart: unless-stopped
 
   db:
     image: postgres:16
-    container_name: food_tracker_db
+    container_name: nutri_sight_db
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-food_user}
@@ -27,5 +27,5 @@
       - "5432:5432"
 
 volumes:
-  food_tracker_data_volume:
+  nutri_sight_data_volume:
   postgres_data:

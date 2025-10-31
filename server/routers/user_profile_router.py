@@ -1,11 +1,12 @@
 ﻿from fastapi import APIRouter, Request, HTTPException, Depends
 from fastapi.responses import JSONResponse
+from sqlalchemy import delete
 
 from database.enums import AuthProvider
 from database.database_connector import get_db_session
-from routers.req_data_types.user_profile_req_data_types import ChangeNameData, ChangeAgeData, ChangePasswordData, ChangeNumericFieldData, ChangeSexData, ChangeDietTypeData
+from routers.req_data_types.user_profile_req_data_types import ChangeNameData, ChangeAgeData, ChangePasswordData, ChangeNumericFieldData, ChangeSexData, ChangeDietTypeData, AddIntoleranceData
 from utils.auth_utils import get_current_user_id, hash_password
-from database.models import User
+from database.models import User, Intolerance, user_intolerance
 # from constants import CAT_PER_USER, BG_TASK_FILES_AMOUNT, validation_rules_results_dir
 from routers.res_data_types.user_profile_res_data_types import GetUserProfileResp, ModifyUserProfileResp
 from routers.res_data_types.res_data_types import SuccessResponse
@@ -169,3 +170,36 @@ def change_goal_carbs(data: ChangeNumericFieldData, user_id: int = Depends(get_c
         return {'success': True, 'message': 'Diet type selected successfully', 'profile': user_profile.to_dict()}
     else:
         return {'success': False, 'message': 'User not found'}
+
+@user_profile_router.post('/intolerances', response_model=ModifyUserProfileResp)
+def change_name(data: AddIntoleranceData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
+    user_profile = session.get(User, user_id)
+    if user_profile:
+        intolerance = session.query(Intolerance).filter(Intolerance.intolerance_name == data.name).first()
+        if not intolerance:
+            intolerance = Intolerance(intolerance_name=data.name)
+            session.add(intolerance)
+            session.commit()
+            session.refresh(intolerance)
+
+
+        user_profile.intolerances.append(intolerance)
+        session.commit()
+        session.refresh(user_profile)
+        return {'success': True, 'message': 'Intolerance added successfully', 'profile': user_profile.to_dict()}
+    else:
+        return {'success': False, 'message': 'User not found'}
+
+
+@user_profile_router.delete('/intolerances/{intolerance_id}', response_model=ModifyUserProfileResp)
+def delete_intolerance(intolerance_id: int, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
+    stmt = delete(user_intolerance).where(
+        user_intolerance.c.user_id == user_id,
+        user_intolerance.c.intolerance_id == intolerance_id
+    )
+
+    session.execute(stmt)
+    session.commit()
+
+    user_profile = session.get(User, user_id)
+    return {'success': True, 'message': 'Intolerance removed successfully', 'profile': user_profile.to_dict()}

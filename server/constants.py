@@ -26,6 +26,7 @@ SMTP_SERVER: str = os.getenv("SMTP_SERVER")
 SMTP_PORT: int = int(os.getenv("SMTP_PORT"))
 
 GOOGLE_CLIENT_ID: str = os.getenv('GOOGLE_CLIENT_ID')
+GEMINI_API_KEY: str = os.getenv('GEMINI_API_KEY')
 
 DATABASE_URL: str = os.getenv('DATABASE_URL')
 

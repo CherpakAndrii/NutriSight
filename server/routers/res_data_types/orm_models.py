@@ -40,6 +40,14 @@ class UserMeal(__BaseModelWithORMConfig):
     created_at: datetime
     source_type: SourceType
 
+class UserIngredient(__BaseModelWithORMConfig):
+    ingredient_id: int
+    user_id: int
+    name: str
+    created_at: datetime
+    source_type: SourceType
+    quantity_available_grams: int
+
 
 class ProductTemplate(__BaseModelWithORMConfig):
     product_id: int

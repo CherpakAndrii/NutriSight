@@ -13,6 +13,15 @@ class UpdateFoodLogResp(__BaseModelWithConfig):
     food_log: List[UserMeal]
 
 
+class AISuggestionResp(__BaseModelWithConfig):
+    name: str
+    default_calories: Optional[float] = None
+    default_proteins: Optional[float] = None
+    default_fats: Optional[float] = None
+    default_carbs: Optional[float] = None
+    default_portion_grams: Optional[float] = None
+
+
 class TemplateSearchResp(__BaseModelWithConfig):
     results: List[ProductTemplate]
 
