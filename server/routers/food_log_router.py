@@ -1,4 +1,4 @@
-﻿from fastapi import APIRouter, Depends, UploadFile
+﻿from fastapi import APIRouter, Depends, UploadFile, Query
 from sqlalchemy import select, func
 
 from database.database_connector import get_db_session, get_async_db_session
@@ -12,8 +12,8 @@ from routers.res_data_types.food_log_res_data_types import GetFoodLogResp, Updat
 food_log_router = APIRouter()
 
 @food_log_router.get('/', response_model=GetFoodLogResp)
-def get_food_log_entries(user_id: int = Depends(get_current_user_id), session = Depends(get_db_session), ):
-    food_log_entries = session.query(UserMeal).filter(UserMeal.user_id == user_id).all()
+def get_food_log_entries(user_id: int = Depends(get_current_user_id), session = Depends(get_db_session), limit: int = Query(50, ge=1, le=100)):
+    food_log_entries = session.query(UserMeal).filter(UserMeal.user_id == user_id).limit(limit).all()
     return {'food_log': [f.to_dict() for f in food_log_entries]}
 
 

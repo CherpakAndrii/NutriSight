@@ -13,6 +13,7 @@ from routers.auth_router import auth_router
 from routers.user_profile_router import user_profile_router
 from routers.food_log_router import food_log_router
 from routers.ingredients_router import ingredients_router
+from routers.recipes_router import recipes_router
 from routers.additional_router import additional_router
 from constants import SERVER_PORT, SERVER_WORKERS
 from utils.launch_utils import configure_logging, configure_directories, configure_db_index
@@ -64,8 +65,9 @@ app.add_middleware(GZipMiddleware, minimum_size=4096)
 # app.mount("/static", StaticFiles(directory="frontend/static", html=True), name="static")
 app.include_router(auth_router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(user_profile_router, prefix="/api/profile", tags=["Profile"])
-app.include_router(food_log_router, prefix="/api/food_log", tags=["Food Log"])
+app.include_router(food_log_router, prefix="/api/food-log", tags=["Food Log"])
 app.include_router(ingredients_router, prefix="/api/ingredients", tags=["Ingredients"])
+app.include_router(recipes_router, prefix="/api/recipes", tags=["Recipes"])
 app.include_router(additional_router, tags=["Additional"])
 
 

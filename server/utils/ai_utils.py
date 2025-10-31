@@ -81,6 +81,8 @@ async def generate_recipe(user: User):
         Dietary restrictions: {user.diet_type.name}
         Intolerances: {[i.intolerance_name for i in user.intolerances]}
         Target calories per day: {user.goal_calories}
+        
+        You don't need to use all the ingredients. You can also include another ingredients if needed.
 
         Return a list of JSON objects like this:
         [{{

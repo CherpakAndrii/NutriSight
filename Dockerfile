@@ -23,7 +23,7 @@ COPY server/utils/ ./utils/
 
 EXPOSE 8005
 
-CMD ["sh", "-c", "gunicorn -k uvicorn.workers.UvicornWorker app:app --bind 0.0.0.0:$SERVER_PORT --workers $SERVER_WORKERS"]
+CMD ["sh", "-c", "gunicorn -k uvicorn.workers.UvicornWorker app:app --timeout $SERVER_WORKER_TIMEOUT --bind 0.0.0.0:$SERVER_PORT --workers $SERVER_WORKERS"]
 
 
 ### docker build -t food_tracker .

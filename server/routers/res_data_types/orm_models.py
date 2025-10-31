@@ -1,4 +1,4 @@
-﻿from typing import Optional, List
+﻿from typing import Optional, List, Dict
 from datetime import datetime
 
 from database.enums import AuthProvider, SourceType, MealTime, Sex, DietType
@@ -58,3 +58,16 @@ class ProductTemplate(__BaseModelWithORMConfig):
     default_carbs: Optional[float] = None
     default_portion_grams: Optional[float] = None
     image_url: Optional[str] = None
+
+
+class UserRecipe(__BaseModelWithORMConfig):
+    recipe_id: int
+    user_id: int
+    name: str
+    ingredients: List[Dict[str, str|float]]  # JSON [{name, amount, unit}]
+    instructions: str
+    calories: float
+    protein: float
+    fat: float
+    carbs: float
+    created_at: datetime

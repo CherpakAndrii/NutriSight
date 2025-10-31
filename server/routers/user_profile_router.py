@@ -88,7 +88,7 @@ def change_sex(data: ChangeSexData, user_id: int = Depends(get_current_user_id),
         return {'success': False, 'message': 'User not found'}
 
 
-@user_profile_router.put('/diet_type', response_model=ModifyUserProfileResp)
+@user_profile_router.put('/diet-type', response_model=ModifyUserProfileResp)
 def change_diet_type(data: ChangeDietTypeData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
     user_profile = session.get(User, user_id)
     if user_profile:
@@ -124,7 +124,7 @@ def change_height(data: ChangeNumericFieldData, user_id: int = Depends(get_curre
         return {'success': False, 'message': 'User not found'}
 
 
-@user_profile_router.put('/goal_calories', response_model=ModifyUserProfileResp)
+@user_profile_router.put('/goal-calories', response_model=ModifyUserProfileResp)
 def change_goal_calories(data: ChangeNumericFieldData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
     user_profile = session.get(User, user_id)
     if user_profile:
@@ -136,7 +136,7 @@ def change_goal_calories(data: ChangeNumericFieldData, user_id: int = Depends(ge
         return {'success': False, 'message': 'User not found'}
 
 
-@user_profile_router.put('/goal_protein', response_model=ModifyUserProfileResp)
+@user_profile_router.put('/goal-protein', response_model=ModifyUserProfileResp)
 def change_goal_protein(data: ChangeNumericFieldData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
     user_profile = session.get(User, user_id)
     if user_profile:
@@ -148,7 +148,7 @@ def change_goal_protein(data: ChangeNumericFieldData, user_id: int = Depends(get
         return {'success': False, 'message': 'User not found'}
 
 
-@user_profile_router.put('/goal_fat', response_model=ModifyUserProfileResp)
+@user_profile_router.put('/goal-fat', response_model=ModifyUserProfileResp)
 def change_goal_fat(data: ChangeNumericFieldData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
     user_profile = session.get(User, user_id)
     if user_profile:
@@ -160,7 +160,7 @@ def change_goal_fat(data: ChangeNumericFieldData, user_id: int = Depends(get_cur
         return {'success': False, 'message': 'User not found'}
 
 
-@user_profile_router.put('/goal_carbs', response_model=ModifyUserProfileResp)
+@user_profile_router.put('/goal-carbs', response_model=ModifyUserProfileResp)
 def change_goal_carbs(data: ChangeNumericFieldData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
     user_profile = session.get(User, user_id)
     if user_profile:
@@ -171,7 +171,7 @@ def change_goal_carbs(data: ChangeNumericFieldData, user_id: int = Depends(get_c
     else:
         return {'success': False, 'message': 'User not found'}
 
-@user_profile_router.post('/intolerances', response_model=ModifyUserProfileResp)
+@user_profile_router.post('/intolerances/', response_model=ModifyUserProfileResp)
 def change_name(data: AddIntoleranceData, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
     user_profile = session.get(User, user_id)
     if user_profile:
