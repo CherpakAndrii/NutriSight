@@ -1,0 +1,36 @@
+:root{
+  --welcome-color: #DDE6ED;
+  --status-info-color: #9DB2BF;
+}
+
+.welcome-page {
+  width: 100%;
+  height: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  animation: heightAnimation .8s forwards;
+}
+
+@keyframes heightAnimation { 
+  from { 
+    height: 5%; 
+  } 
+  to { 
+    height: 100%; 
+  }
+}
+
+.welcome {
+  color: var(--welcome-color);
+  font-size: calc(10px + 5vmin);
+  margin: 20px;
+}
+
+.status-info {
+  color: var(--status-info-color);
+  font-size: 2em;
+  margin: 20px;
+}

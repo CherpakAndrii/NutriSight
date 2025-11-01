@@ -1,12 +1,13 @@
 ﻿from fastapi import APIRouter, Depends, UploadFile, Query
 from sqlalchemy import select, func
+from datetime import datetime, timedelta
 
 from database.database_connector import get_db_session, get_async_db_session
 from routers.req_data_types.food_log_req_data_types import NewFoodLogData, UpdateFoodLogData, ProductTemplateSearchData
 from utils.auth_utils import get_current_user_id
 from utils.ai_utils import analyze_dish
 from database.models import UserMeal, ProductTemplate
-from routers.res_data_types.food_log_res_data_types import GetFoodLogResp, UpdateFoodLogResp, TemplateSearchResp, AISuggestionResp
+from routers.res_data_types.food_log_res_data_types import GetFoodLogResp, UpdateFoodLogResp, TemplateSearchResp, AISuggestionResp, StatisticsResp
 
 
 food_log_router = APIRouter()
@@ -81,4 +82,43 @@ async def recognize_meal(file: UploadFile, user_id: int = Depends(get_current_us
         "default_fats": float(nutrients.get('fat')) if nutrients.get('fat') else None,
         "default_carbs": float(nutrients.get('carbs')) if nutrients.get('carbs') else None,
         "default_portion_grams": float(dish.get('approx_weight_grams')) if dish.get('approx_weight_grams') else None
+    }
+
+@food_log_router.get('/stats', response_model=StatisticsResp)
+def get_food_log_stats(user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
+    now = datetime.now()
+    today_start = datetime(now.year, now.month, now.day)
+    week_ago = today_start - timedelta(days=6)
+
+    def scaled_sum(field):
+        return func.sum((UserMeal.actual_portion_grams / 100.0) * field)
+
+    stats = session.query(
+        func.coalesce(scaled_sum(UserMeal.actual_calories), 0).label("calories"),
+        func.coalesce(scaled_sum(UserMeal.actual_proteins), 0).label("proteins"),
+        func.coalesce(scaled_sum(UserMeal.actual_fats), 0).label("fats"),
+        func.coalesce(scaled_sum(UserMeal.actual_carbs), 0).label("carbs")
+    ).filter(
+        UserMeal.user_id == user_id,
+        UserMeal.created_at < today_start + timedelta(days=1)
+    )
+
+    today_stats = stats.filter(UserMeal.created_at >= today_start).one()
+    week_stats = stats.filter(UserMeal.created_at >= week_ago).one()
+
+    avg_stats = {
+        "calories": week_stats.calories / 7,
+        "proteins": week_stats.proteins / 7,
+        "fats": week_stats.fats / 7,
+        "carbs": week_stats.carbs / 7
+    }
+
+    return {
+        "today": {
+            "calories": today_stats.calories,
+            "proteins": today_stats.proteins,
+            "fats": today_stats.fats,
+            "carbs": today_stats.carbs
+        },
+        "average_last_7_days": avg_stats
     }

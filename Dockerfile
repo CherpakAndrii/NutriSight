@@ -1,9 +1,9 @@
-#FROM node:20-alpine AS frontend-builder
-#
-#WORKDIR /app
-#COPY ./client/ ./
-#RUN npm install
-#RUN npm run build
+FROM node:20-alpine AS frontend-builder
+
+WORKDIR /app
+COPY ./client/ ./
+RUN npm install
+RUN npm run build
 
 FROM python:3.12-slim AS backend
 
@@ -19,7 +19,7 @@ COPY server/data/.gitkeep ./data/
 COPY server/routers/ ./routers/
 COPY server/utils/ ./utils/
 
-#COPY --from=frontend-builder /app/build/ ./frontend/
+COPY --from=frontend-builder /app/build/ ./frontend/
 
 EXPOSE 8005
 

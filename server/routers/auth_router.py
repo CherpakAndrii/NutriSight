@@ -58,12 +58,12 @@ def sign_up(credentials: Credentials):
     return {'success': True}
 
 
-# @auth_router.post('/verify', response_model=LoginResp)
-# def verify_email(credentials: VerifyTokenData):
-#     auth_result, token = create_acc(credentials.access_token)
-@auth_router.get('/verify/{token}', response_model=LoginResp)
-def verify_email(token: str):
-    auth_result, token = create_acc(token)
+@auth_router.post('/verify/', response_model=LoginResp)
+def verify_email(credentials: VerifyTokenData):
+    auth_result, token = create_acc(credentials.access_token)
+# @auth_router.get('/verify/{token}', response_model=LoginResp)
+# def verify_email(token: str):
+#     auth_result, token = create_acc(token)
 
     response = JSONResponse(content=auth_result)
 

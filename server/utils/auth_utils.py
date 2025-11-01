@@ -84,18 +84,24 @@ def google_authenticate_user(id_tkn: str) -> tuple[dict, str]:
     try:
         payload = id_token.verify_oauth2_token(id_tkn, requests.Request(), GOOGLE_CLIENT_ID)
         email = payload["email"]
+        u_name = payload.get("given_name", '')
+        u_surname = payload.get("family_name", '')
     except Exception:
         raise HTTPException(status_code=401, detail="Invalid Google token")
 
     with Session() as session:
         user = session.query(User).filter(User.email == email).first()
+        u_full_name = f"{u_name} {u_surname}".strip()
+
         if user is None:
-            user = User(email=email, auth_provider=AuthProvider.Google)
+            user = User(email=email, auth_provider=AuthProvider.Google, name=u_full_name)
             session.add(user)
             session.commit()
             session.refresh(user)
         elif user.auth_provider == AuthProvider.Local:
             user.auth_provider = AuthProvider.Both
+            if not user.name:
+                user.name = u_full_name
             session.commit()
             session.refresh(user)
 

@@ -62,7 +62,7 @@ app.add_middleware(
 
 app.add_middleware(GZipMiddleware, minimum_size=4096)
 
-# app.mount("/static", StaticFiles(directory="frontend/static", html=True), name="static")
+app.mount("/static", StaticFiles(directory="frontend/static", html=True), name="static")
 app.include_router(auth_router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(user_profile_router, prefix="/api/profile", tags=["Profile"])
 app.include_router(food_log_router, prefix="/api/food-log", tags=["Food Log"])

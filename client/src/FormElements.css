@@ -1,0 +1,177 @@
+﻿:root {
+    --form-label-color: #9DB2BF;
+    --input-bg-color: #526D82;
+    --input-text-color: #DDE6ED;
+    
+    --green-button-default-color: #2ea44f;
+    --green-button-hover-bg-color: #FFFFFF;
+    --green-button-hover-color: #2c974b;
+    --green-button-focus-color: rgba(46, 164, 79, .4);
+    --green-button-disabled-bg-color: #94d3a2;
+    --green-button-disabled-border-color: rgba(27, 31, 35, .1);
+    --green-button-disabled-text-color: rgba(255, 255, 255, .8);
+    --green-button-active-color: #298e46;
+    --green-button-active-shadow-color: rgba(20, 70, 32, .2);
+    --green-button-text-color: #fff;
+    --green-button-border-color: rgba(27, 31, 35, .15);
+    --green-button-shadow-color: rgba(27, 31, 35, .1);
+
+    --red-button-bg-color: #FF4742;
+    --red-button-border-color: #FF4742;
+    --red-button-shadow-color: rgba(0, 0, 0, 0.1);
+    --red-button-text-color: #FFFFFF;
+    --red-button-hover-bg-color: #FFFFFF;
+    --red-button-hover-text-color: #FF4742;
+    --red-button-focus-color: #77322f;
+    --red-button-disabled-text-color: rgba(255, 255, 255, .8);
+    --red-button-disabled-bg-color: #ff8f8c;
+    
+    --info-text-color: grey;
+    --error-text-color: lightcoral;
+}
+
+label {
+    text-align: left;
+    margin-left: 5px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    color: var(--form-label-color);
+}
+
+input {
+    padding: 10px;
+    color-scheme: dark;
+    background-color: var(--input-bg-color);
+    color: var(--input-text-color);
+}
+
+input::placeholder {
+    color: var(--form-label-color);
+    font-size: 1.2em;
+}
+
+select {
+    padding: 10px;
+    color-scheme: dark;
+    background-color: var(--input-bg-color);
+    font-size: 1em;
+    color: var(--input-text-color);
+}
+
+select::placeholder {
+    color: var(--form-label-color);
+    font-size: 1.2em;
+}
+
+.button {
+    appearance: none;
+    border-radius: 6px;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-block;
+    font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    padding: 6px 16px;
+    text-align: center;
+    text-rendering: geometricprecision;
+    text-decoration: none;
+    text-transform: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.green-button {
+    background-color: var(--green-button-default-color);
+    border: 1px solid var(--green-button-border-color);
+    box-shadow: var(--green-button-shadow-color) 1px 2px 4px;
+    color: var(--green-button-text-color);
+}
+
+.green-button:hover,
+.green-button:active {
+    background-color: var(--green-button-hover-bg-color);
+    background-position: 0 0;
+    color: var(--green-button-hover-color);
+}
+
+.green-button:active {
+    opacity: .5;
+}
+
+.green-button:focus {
+    box-shadow: var(--green-button-focus-color) 0 0 0 3px;
+    outline: none;
+}
+
+.green-button:disabled {
+    background-color: var(--green-button-disabled-bg-color);
+    border-color: var(--green-button-disabled-border-color);
+    color: var(--green-button-disabled-text-color);
+    cursor: default;
+}
+
+.red-button {
+    background: var(--red-button-bg-color);
+    border: 1px solid var(--red-button-border-color);
+    box-shadow: var(--red-button-shadow-color) 1px 2px 4px;
+    color: var(--red-button-text-color);
+}
+
+.red-button:hover,
+.red-button:active {
+    background-color: var(--red-button-hover-bg-color);
+    background-position: 0 0;
+    color: var(--red-button-hover-text-color);
+}
+
+.red-button:active {
+    opacity: .5;
+}
+
+.red-button:focus {
+    box-shadow: var(--red-button-focus-color) 0 0 0 3px;
+    outline: none;
+}
+
+.red-button:disabled {
+    background-color: var(--red-button-disabled-bg-color);
+    color: var(--red-button-disabled-text-color);
+    cursor: default;
+}
+
+.info-text-mini {
+    color: var(--info-text-color);
+    font-size: .8em;
+    margin: 5px;
+}
+
+.info-link-mini {
+    color: var(--info-text-color);
+    margin: 5px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.info-text {
+    color: var(--info-text-color);
+    font-size: 1.3em;
+    margin: 15px;
+    text-align: left;
+}
+
+.error-text-mini {
+    color: var(--error-text-color);
+    font-size: .8em;
+    margin: 5px;
+}
+.error-text {
+    color: var(--error-text-color);
+    font-size: 1.3em;
+    margin: 15px;
+    text-align: left;
+}

@@ -25,3 +25,14 @@ class AISuggestionResp(__BaseModelWithConfig):
 class TemplateSearchResp(__BaseModelWithConfig):
     results: List[ProductTemplate]
 
+
+class StatisticsEntry(__BaseModelWithConfig):
+    calories: float
+    proteins: float
+    fats: float
+    carbs: float
+
+
+class StatisticsResp(__BaseModelWithConfig):
+    today: StatisticsEntry
+    average_last_7_days: StatisticsEntry

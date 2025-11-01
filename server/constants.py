@@ -13,6 +13,7 @@ VERIFY_EXPIRATION: int = int(os.getenv('VERIFY_EXPIRATION'))
 
 SERVER_PORT: int = int(os.getenv('SERVER_PORT'))
 SERVER_WORKERS: int = int(os.getenv('SERVER_WORKERS'))
+SERVER_BASE_URL: int = os.getenv('SERVER_BASE_URL')
 
 POSTGRES_USER: str = os.getenv('POSTGRES_USER')
 POSTGRES_PASSWORD: str = os.getenv('POSTGRES_PASSWORD')

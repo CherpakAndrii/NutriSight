@@ -1,4 +1,4 @@
-﻿from fastapi import APIRouter, Request, HTTPException, Depends
+﻿from fastapi import APIRouter, HTTPException, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy import delete
 
@@ -7,7 +7,6 @@ from database.database_connector import get_db_session
 from routers.req_data_types.user_profile_req_data_types import ChangeNameData, ChangeAgeData, ChangePasswordData, ChangeNumericFieldData, ChangeSexData, ChangeDietTypeData, AddIntoleranceData
 from utils.auth_utils import get_current_user_id, hash_password
 from database.models import User, Intolerance, user_intolerance
-# from constants import CAT_PER_USER, BG_TASK_FILES_AMOUNT, validation_rules_results_dir
 from routers.res_data_types.user_profile_res_data_types import GetUserProfileResp, ModifyUserProfileResp
 from routers.res_data_types.res_data_types import SuccessResponse
 
@@ -19,19 +18,16 @@ def get_my_profile(user_id: int = Depends(get_current_user_id), session = Depend
     user_profile = session.get(User, user_id).to_dict()
     return {'profile': user_profile}
 
-@user_profile_router.delete('/{deleted_user_id}', response_model=SuccessResponse)
-def delete_my_profile(deleted_user_id: int, user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
-    if user_id == deleted_user_id:
-        user_profile = session.get(User, user_id)
-        if user_profile:
-            session.delete(user_profile)
-            session.commit()
+@user_profile_router.delete('/', response_model=SuccessResponse)
+def delete_my_profile(user_id: int = Depends(get_current_user_id), session = Depends(get_db_session)):
+    user_profile = session.get(User, user_id)
+    if user_profile:
+        session.delete(user_profile)
+        session.commit()
 
-        response = JSONResponse(content={"success": True})
-        response.delete_cookie("access_token")
-        return response
-    else:
-        raise HTTPException(403)
+    response = JSONResponse(content={"success": True})
+    response.delete_cookie("access_token")
+    return response
 
 
 @user_profile_router.put('/name', response_model=ModifyUserProfileResp)
