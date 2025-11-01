@@ -5,7 +5,7 @@ from constants import SMTP_USER, SMTP_PASSWORD, SMTP_SERVER, SMTP_PORT, SERVER_B
 
 def send_verification_email(to_email: str, token: str):
     verification_link = f"{SERVER_BASE_URL}verify/{token}" # TODO redirect to frontend that will do a post request
-    subject = "Verify your email"
+    subject = "NutriSight: Verify your email"
     body = f"""
     <p>Hi!</p>
     <p>Click the link below to verify your email address:</p>

@@ -1,0 +1,127 @@
+﻿.profile-page {
+  color: #fff;
+  flex: 1;
+  overflow: auto;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-attributes {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.attribute-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #27354a;
+  padding: 10px 14px;
+  border-radius: 10px;
+}
+
+.attribute-label {
+  font-weight: 600;
+  color: #bcd;
+  text-align: left;
+  flex: 1;
+}
+
+.attribute-value {
+  flex: 2;
+  text-align: right;
+}
+
+.attribute-input {
+  flex: 2;
+  background-color: #1a2535;
+  color: #fff;
+  border: 1px solid #445;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 0.95rem;
+}
+
+.attribute-buttons {
+  display: flex;
+  gap: 6px;
+  margin-left: 8px;
+}
+
+.icon-button {
+  border: none;
+  background: none;
+  color: #bcd;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.icon-button:hover {
+  color: #fff;
+}
+
+.save-button,
+.cancel-button {
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.save-button {
+  background-color: #2e8b57;
+  color: white;
+}
+
+.cancel-button {
+  background-color: #8b2e2e;
+  color: white;
+}
+
+.password-section {
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px solid #445;
+}
+
+.password-section h3 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.password-field input {
+  background-color: #1a2535;
+  color: #fff;
+  border: 1px solid #445;
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+
+.password-submit {
+  background-color: #2e8b57;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: block;
+  margin: 10px auto 0;
+}
+
+.password-submit:hover {
+  background-color: #37a869;
+}

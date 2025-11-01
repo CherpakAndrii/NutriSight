@@ -198,7 +198,7 @@ export async function updateProfileGoalCarbs(new_goal_carbs: number): Promise<Mo
     return updateProfileNumericField(API.PROFILE_GOAL_CARBS, new_goal_carbs);
 }
 
-export async function AddIntolerance(new_intolerance: string): Promise<ModifyUserProfileResp> {
+export async function addIntolerance(new_intolerance: string): Promise<ModifyUserProfileResp> {
     const bodyData = { name: new_intolerance };
     return axios
         .post(API.PROFILE_INTOLERANCES, bodyData, {timeout: mediumOperationsTimeout})
