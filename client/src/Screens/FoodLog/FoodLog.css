@@ -1,0 +1,91 @@
+:root {
+    --default-res-container-bg: #3D566B;
+    --hover-res-container-bg: #496F87;
+    --extended-res-container-bg: #354A5F;
+    --links-container-bg: #27374D;
+    --res-title-color: white;
+    --res-link-color: white;
+    --res-missed-link-color: lightcoral;
+}
+
+.res-container{
+    background-color: var(--default-res-container-bg);
+    height: 50px;
+    width: 100%;
+    border-radius: 8px;
+    transition: background-color .3s linear;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.meal-name {
+    margin: 0 10px 0 10px;
+    color: var(--res-title-color);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chevron-wrapper {
+    margin: 0 10px 0 10px;
+    color: var(--res-title-color);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.res-container:hover {
+    background-color: var(--hover-res-container-bg);
+}
+
+.food-logs-group-wrapper {
+    background-color: var(--extended-res-container-bg);
+    border-radius: 8px;
+    margin: 15px 15px 0 15px;
+}
+
+.extendable-res-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.extendable-res-container-w-table {
+    display: flex;
+    flex-direction: column;
+    height: 65vh;
+}
+
+.extendable-res-container-content {
+    text-align: left;
+    color: var(--res-link-color);
+    transition: background-color .3s linear;
+    padding: 10px;
+    margin: 0;
+    border-radius: 10px;
+}
+
+.res-wrapper a.extendable-res-container-content:hover {
+    background-color: var(--hover-res-container-bg);
+}
+
+.food-logs-wrapper {
+    background-color: var(--links-container-bg);
+    border-radius: 8px;
+    margin: 8px;
+}
+
+.food-logs-container{
+    height: 50px;
+    width: 100%;
+    border-radius: 8px;
+    transition: background-color .3s linear;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    cursor: pointer;
+    background-blend-mode: lighten;
+}

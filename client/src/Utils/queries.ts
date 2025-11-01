@@ -231,9 +231,9 @@ export async function getStatistics(): Promise<StatisticsResp> {
 
 // endregion
 // region FoodLog Actions
-export async function getFoodLogEntries(): Promise<GetFoodLogResp> {
+export async function getFoodLogEntries(amount: number = 50): Promise<GetFoodLogResp> {
     return axios
-        .get(API.FOOD_LOG, {timeout: mediumOperationsTimeout})
+        .get(API.FOOD_LOG+'?limit='+amount, {timeout: mediumOperationsTimeout})
         .then(({data}) => {
             return data as GetFoodLogResp;
         }).catch((reason) => {
@@ -252,8 +252,8 @@ export async function createFoodLogEntry(name: string, meal_time: MealTime, actu
         });
 }
 
-export async function updateFoodLogEntry(log_id: number, meal_time: MealTime, actual_calories: number, actual_proteins: number, actual_fats: number, actual_carbs: number, actual_portion_grams: number, source_type: SourceType): Promise<UpdateFoodLogResp> {
-    const bodyData = { meal_time: meal_time, actual_calories: actual_calories, actual_proteins: actual_proteins, actual_fats: actual_fats, actual_carbs: actual_carbs, actual_portion_grams: actual_portion_grams, source_type: source_type };
+export async function updateFoodLogEntry(log_id: number, meal_time: MealTime, actual_calories: number, actual_proteins: number, actual_fats: number, actual_carbs: number, actual_portion_grams: number): Promise<UpdateFoodLogResp> {
+    const bodyData = { meal_time: meal_time, actual_calories: actual_calories, actual_proteins: actual_proteins, actual_fats: actual_fats, actual_carbs: actual_carbs, actual_portion_grams: actual_portion_grams };
     return axios
         .put(API.FOOD_LOG+log_id, bodyData, {timeout: mediumOperationsTimeout})
         .then(({data}) => {

@@ -47,7 +47,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ auth_provider }) => {
         <span className="attribute-label">Repeat New Password:</span>
         <input className="attribute-input" type="password" value={repeatPwd} onChange={(e) => setRepeatPwd(e.target.value)} />
       </div>
-      <button onClick={handleChange} className="save-button">Change Password</button>
+      <button onClick={handleChange} className="button green-button">Change Password</button>
     </div>
   );
 };
