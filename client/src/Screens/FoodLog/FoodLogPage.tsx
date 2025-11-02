@@ -2,11 +2,12 @@ import "./FoodLog.css";
 import React, {useState} from "react";
 import {Route, Routes} from "react-router-dom";
 import FoodLogPageMain from "./FoodLogList/FoodLogPageMain";
-import {PageInDevelopment, PageNotFound} from "../HomeScreen/ErrorPages";
-import {FoodLogTemplate} from "./FoodLogTemplate";
-import AddFoodLogPage from "./AddFoodLogPage";
+import {PageNotFound} from "../HomeScreen/ErrorPages";
+import {FoodLogTemplate} from "./AddFoodLog/FoodLogTemplate";
+import AddFoodLogPage from "./AddFoodLog/AddFoodLogPage";
 import {UserMeal} from "../../Utils/response-types";
-import RecognizeMealPage from "./RecognizeMeal";
+import RecognizeMealPage from "./AddFoodLog/RecognizeMeal";
+import SearchMealPage from "./AddFoodLog/SearchMeal";
 
 const FoodLogPage: React.FC = () => {
     const [selectedMealTemplate, setSelectedMealTemplate] = useState<FoodLogTemplate|undefined>(undefined);
@@ -17,7 +18,7 @@ const FoodLogPage: React.FC = () => {
           <Route path="/" element={<FoodLogPageMain setSelectedTemplate={setSelectedMealTemplate} foodLog={foodLog} setFoodLog={setFoodLog} />} />
           <Route path="/photo" element={<RecognizeMealPage setSelectedTemplate={setSelectedMealTemplate}/>} />
           <Route path="/add" element={<AddFoodLogPage selectedTemplate={selectedMealTemplate} setSelectedTemplate={setSelectedMealTemplate} setFoodLog={setFoodLog} />} />
-          <Route path="/search" element={<PageInDevelopment />} />
+          <Route path="/search" element={<SearchMealPage setSelectedTemplate={setSelectedMealTemplate} />} />
           <Route path="*" element={<PageNotFound/>} />
         </Routes>
     );

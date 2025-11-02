@@ -1,9 +1,11 @@
+import "../FoodLog.css";
 import React, {useRef, useState} from "react";
-import {recognizeIngredient} from "../../Utils/queries";
+import {recognizeMeal} from "../../../Utils/queries";
+import {MealTime, SourceType} from "../../../Utils/enums";
 import {useNavigate} from "react-router-dom";
-import {IngredientAISuggestionResp} from "../../Utils/response-types";
+import {FoodLogTemplate} from "./FoodLogTemplate";
 
-const RecognizeIngredientPage = (props: {setSelectedTemplate: React.Dispatch<React.SetStateAction<IngredientAISuggestionResp|undefined>>}) => {
+const RecognizeMealPage = (props: {setSelectedTemplate: React.Dispatch<React.SetStateAction<FoodLogTemplate|undefined>>}) => {
   const navigate = useNavigate();
 
   const [file, setFile] = useState<File | null>(null);
@@ -25,15 +27,16 @@ const RecognizeIngredientPage = (props: {setSelectedTemplate: React.Dispatch<Rea
         setStatus('uploading');
 
         try {
-            const response = await recognizeIngredient(file.name, file);
+            const response = await recognizeMeal(file.name, file);
 
             if (!response.errorCode) {
                 setFile(null);
                 setStatus('idle');
                 props.setSelectedTemplate({
-                    name: response.name, portion_grams: response.portion_grams!
+                    log_id: 0, meal_time: MealTime.Snack, source_type: SourceType.Photo,
+                    name: response.name, actual_calories: response.default_calories!, actual_proteins: response.default_proteins!, actual_fats: response.default_fats!, actual_carbs: response.default_carbs!, actual_portion_grams: response.default_portion_grams!
                 });
-                navigate('/ingredients/add');
+                navigate('/foodlog/add');
             } else {
                 const errorMsg = `Upload failed: ${
                     response.errorCode ? ` (Code: ${response.errorCode})` : ''
@@ -67,4 +70,4 @@ const RecognizeIngredientPage = (props: {setSelectedTemplate: React.Dispatch<Rea
     );
 };
 
-export default RecognizeIngredientPage;
+export default RecognizeMealPage;

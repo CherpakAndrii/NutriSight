@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import {createIngredient} from "../../Utils/queries";
-import {SourceType} from "../../Utils/enums";
+import {createIngredient} from "../../../Utils/queries";
+import {SourceType} from "../../../Utils/enums";
 import {faChevronLeft} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useNavigate} from "react-router-dom";
-import {IngredientAISuggestionResp, UserIngredient} from "../../Utils/response-types";
+import {IngredientAISuggestionResp, UserIngredient} from "../../../Utils/response-types";
 
 const AddIngredientsPage = (props: {selectedTemplate: IngredientAISuggestionResp|undefined, setSelectedTemplate: React.Dispatch<React.SetStateAction<IngredientAISuggestionResp|undefined>>, setIngredients: React.Dispatch<React.SetStateAction<UserIngredient[]>>}) => {
   const navigate = useNavigate();

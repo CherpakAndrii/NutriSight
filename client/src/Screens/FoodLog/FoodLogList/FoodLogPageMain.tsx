@@ -6,7 +6,7 @@ import FoodLogEntryGroup from "./FoodLogEntryGroup";
 import {faCamera, faKeyboard, faMagnifyingGlassPlus} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useNavigate} from "react-router-dom";
-import {FoodLogTemplate} from "../FoodLogTemplate";
+import {FoodLogTemplate} from "../AddFoodLog/FoodLogTemplate";
 
 const FoodLogPageMain = (props: {setSelectedTemplate: React.Dispatch<React.SetStateAction<FoodLogTemplate|undefined>>, foodLog: UserMeal[], setFoodLog: React.Dispatch<React.SetStateAction<UserMeal[]>>}) => {
   const navigate = useNavigate();

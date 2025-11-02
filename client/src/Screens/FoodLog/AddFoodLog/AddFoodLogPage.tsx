@@ -1,12 +1,12 @@
-import "./FoodLog.css";
+import "../FoodLog.css";
 import React, {useState} from "react";
-import {createFoodLogEntry, updateFoodLogEntry} from "../../Utils/queries";
-import {MealTime, SourceType} from "../../Utils/enums";
+import {createFoodLogEntry, updateFoodLogEntry} from "../../../Utils/queries";
+import {MealTime, SourceType} from "../../../Utils/enums";
 import {faChevronLeft} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useNavigate} from "react-router-dom";
+import {UserMeal} from "../../../Utils/response-types";
 import {FoodLogTemplate} from "./FoodLogTemplate";
-import {UserMeal} from "../../Utils/response-types";
 
 const AddFoodLogPage = (props: {selectedTemplate: FoodLogTemplate|undefined, setSelectedTemplate: React.Dispatch<React.SetStateAction<FoodLogTemplate|undefined>>, setFoodLog: React.Dispatch<React.SetStateAction<UserMeal[]>>}) => {
   const navigate = useNavigate();

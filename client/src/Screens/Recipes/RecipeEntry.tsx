@@ -1,18 +1,21 @@
 import React, {useState} from "react";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faChevronDown, faChevronUp} from '@fortawesome/free-solid-svg-icons';
-import {UserIngredient} from "../../../Utils/response-types";
-import {removeIngredient} from "../../../Utils/queries";
-import {SourceType} from "../../../Utils/enums";
+import {UserRecipe} from "../../Utils/response-types";
+import {removeRecipe} from "../../Utils/queries";
 
 
-const IngredientEntry = (props: {ingredient: UserIngredient, setIngredients: React.Dispatch<React.SetStateAction<UserIngredient[]>>}) => {
+function capitalize(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
+const RecipeEntry = (props: {recipe: UserRecipe, setRecipes: React.Dispatch<React.SetStateAction<UserRecipe[]>>}) => {
     const [extended, setExtended] = useState<boolean>(false);
 
     const handleRemove = async () => {
-      const resp = await removeIngredient(props.ingredient.ingredient_id);
+      const resp = await removeRecipe(props.recipe.recipe_id);
       if (resp.success) {
-        props.setIngredients(resp.ingredients);
+        props.setRecipes(resp.recipes);
       }
     };
 
@@ -21,7 +24,7 @@ const IngredientEntry = (props: {ingredient: UserIngredient, setIngredients: Rea
             <div className="food-logs-container" onClick={() => {
                 setExtended(!extended)
             }}>
-                <p className="meal-name">{props.ingredient.name}</p>
+                <p className="meal-name">{props.recipe.name}</p>
                 <div className="chevron-wrapper">
                     <FontAwesomeIcon icon={extended ? faChevronUp : faChevronDown}/>
                 </div>
@@ -31,25 +34,27 @@ const IngredientEntry = (props: {ingredient: UserIngredient, setIngredients: Rea
                     <div className="attribute-row" key="name">
                         <span className="attribute-label">Name</span>
                         <span className="attribute-value">
-                          {props.ingredient.name}
+                          {props.recipe.name}
                         </span>
                     </div>
-                    <div className="attribute-row" key="quantity_available_grams">
-                        <span className="attribute-label">Quantity Available</span>
+                    <div className="attribute-row" key="ingredients">
+                        <span className="attribute-label">Ingredients</span>
                         <span className="attribute-value">
-                          {props.ingredient.quantity_available_grams} g
+                          {props.recipe.ingredients.map(i => `${i.name} -- ${i.amount} ${i.unit}`).join('\n')}
                         </span>
                     </div>
+                    {['calories', 'protein', 'fat', 'carbs', 'instructions'].map(key => (
+                    <div className="attribute-row" key={key}>
+                        <span className="attribute-label">{capitalize(key)}</span>
+                        <span className="attribute-value">
+                          {props.recipe[key]?.toString()}
+                        </span>
+                    </div>
+                ))}
                     <div className="attribute-row" key="created_at">
                         <span className="attribute-label">Created At</span>
                         <span className="attribute-value">
-                          {props.ingredient.created_at.replace('T', ' ').split('.')[0]}
-                        </span>
-                    </div>
-                    <div className="attribute-row" key="source_type">
-                        <span className="attribute-label">Source Type</span>
-                        <span className="attribute-value">
-                          {SourceType[props.ingredient.source_type]}
+                          {props.recipe.created_at.replace('T', ' ').split('.')[0]}
                         </span>
                     </div>
                     <div style={{display: "flex", flexDirection: "row", width: "100%", gap: 5}}>
@@ -62,4 +67,4 @@ const IngredientEntry = (props: {ingredient: UserIngredient, setIngredients: Rea
     );
 }
 
-export default IngredientEntry;
+export default RecipeEntry;

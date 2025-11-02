@@ -12,18 +12,3 @@ class AddRecipeResp(__BaseModelWithConfig):
     success: bool
     recipes: List[UserRecipe]
 
-
-class GeneratedRecipe(__BaseModelWithConfig):
-    recipe_id: int
-    user_id: int
-    name: str
-    ingredients: List[Dict[str, str | float]]  # JSON [{name, amount, unit}]
-    instructions: str
-    calories: float
-    protein: float
-    fat: float
-    carbs: float
-
-
-class AISuggestionResp(__BaseModelWithConfig):
-    recipes: List[GeneratedRecipe]

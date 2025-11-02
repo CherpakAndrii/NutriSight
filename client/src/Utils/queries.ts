@@ -1,6 +1,6 @@
 import axios from "axios";
 import API from "./api";
-import { SuccessResponse, LoginResp, GetUserProfileResp, StatisticsResp, ModifyUserProfileResp, GetFoodLogResp, UpdateFoodLogResp, MealAISuggestionResp, TemplateSearchResp, GetIngredientsResp, AddIngredientResp, IngredientAISuggestionResp, GetRecipesResp, AddRecipeResp, RecipeAISuggestionResp} from "./response-types";
+import { SuccessResponse, LoginResp, GetUserProfileResp, StatisticsResp, ModifyUserProfileResp, GetFoodLogResp, UpdateFoodLogResp, MealAISuggestionResp, TemplateSearchResp, GetIngredientsResp, AddIngredientResp, IngredientAISuggestionResp, GetRecipesResp, AddRecipeResp} from "./response-types";
 import {DietType, MealTime, Sex, SourceType} from "./enums";
 
 const simpleOperationsTimeout = 10_000;
@@ -366,13 +366,13 @@ export async function removeRecipe(recipe_id: number): Promise<AddRecipeResp> {
         });
 }
 
-export async function generateRecipes(): Promise<RecipeAISuggestionResp> {
+export async function generateRecipes(): Promise<GetRecipesResp> {
     return axios
         .post(API.GENERATE_RECIPE, {}, {timeout: complexOperationsTimeout})
         .then(({data}) => {
-            return data as RecipeAISuggestionResp;
+            return data as GetRecipesResp;
         }).catch((reason) => {
-            return {recipes: [], errorCode: reason.response !== undefined? reason.response.status : reason.request.status } as RecipeAISuggestionResp;
+            return {recipes: [], errorCode: reason.response !== undefined? reason.response.status : reason.request.status } as GetRecipesResp;
         });
 }
 

@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faChevronDown, faChevronUp} from '@fortawesome/free-solid-svg-icons';
 import {UserMeal} from "../../../Utils/response-types";
 import FoodLogEntry from './FoodLogEntry';
-import {FoodLogTemplate} from "../FoodLogTemplate";
+import {FoodLogTemplate} from "../AddFoodLog/FoodLogTemplate";
 
 
 const FoodLogEntryGroup = (props: {date: string, items: UserMeal[], setLogs: React.Dispatch<React.SetStateAction<UserMeal[]>>, setSelectedTemplate: React.Dispatch<React.SetStateAction<FoodLogTemplate|undefined>>}) => {

@@ -4,7 +4,7 @@ import {faChevronDown, faChevronUp} from '@fortawesome/free-solid-svg-icons';
 import {UserMeal} from "../../../Utils/response-types";
 import {removeFoodLogEntry} from "../../../Utils/queries";
 import {MealTime, SourceType} from "../../../Utils/enums";
-import {FoodLogTemplate} from "../FoodLogTemplate";
+import {FoodLogTemplate} from "../AddFoodLog/FoodLogTemplate";
 import {useNavigate} from "react-router-dom";
 
 

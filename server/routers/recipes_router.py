@@ -3,11 +3,10 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from database.database_connector import get_db_session, get_async_db_session
-from routers.req_data_types.recipes_req_data_types import AddRecipeData
 from utils.auth_utils import get_current_user_id
 from utils.ai_utils import generate_recipe
 from database.models import UserRecipe, User
-from routers.res_data_types.recipes_res_data_types import GetRecipesResp, AddRecipeResp, AISuggestionResp
+from routers.res_data_types.recipes_res_data_types import GetRecipesResp, AddRecipeResp
 
 
 recipes_router = APIRouter()
@@ -29,7 +28,7 @@ def delete_user_recipe(recipe_id: int, user_id: int = Depends(get_current_user_i
     return {'success': True, 'recipes': [f.to_dict() for f in user_recipes]}
 
 
-@recipes_router.post('/generate', response_model=AISuggestionResp)
+@recipes_router.post('/generate', response_model=GetRecipesResp)
 async def create_recipe(user_id: int = Depends(get_current_user_id), a_session = Depends(get_async_db_session)):
     stmt = (
         select(User)
@@ -49,8 +48,8 @@ async def create_recipe(user_id: int = Depends(get_current_user_id), a_session =
     for recipe in recipes:
         new_recipe = UserRecipe(user_id=user_id, name=recipe.get('name', ''), ingredients=recipe.get('ingredients', ''), instructions=recipe.get('instructions', ''), calories=recipe.get('calories', ''), protein=recipe.get('protein', ''), fat=recipe.get('fat', ''), carbs=recipe.get('carbs', ''))
         a_session.add(new_recipe)
-        a_session.commit()
-        a_session.refresh(new_recipe)
+        await a_session.commit()
+        await a_session.refresh(new_recipe)
         updated_recipes.append(new_recipe.to_dict())
 
     return {"recipes": updated_recipes}

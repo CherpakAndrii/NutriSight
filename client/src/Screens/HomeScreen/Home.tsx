@@ -6,8 +6,9 @@ import ProfilePage from '../Profile/ProfilePage'
 import StatisticsPage from '../StatsScreen/StatsPage'
 import Footer from "../Footer";
 import FoodLogPage from "../FoodLog/FoodLogPage";
-import {PageInDevelopment, PageNotFound} from "./ErrorPages"
+import {PageNotFound} from "./ErrorPages"
 import IngredientsPage from "../Ingredients/IngredientsPage";
+import RecipesPage from "../Recipes/RecipesPage";
 
 const Home = (props: {myUserId: number, setMyUserId: React.Dispatch<React.SetStateAction<number>>}) => {
     const location = useLocation();
@@ -20,7 +21,7 @@ const Home = (props: {myUserId: number, setMyUserId: React.Dispatch<React.SetSta
               <Route path="/stats" element={<StatisticsPage />} />
               <Route path="/foodlog/*" element={<FoodLogPage />} />
               <Route path="/ingredients/*" element={<IngredientsPage />} />
-              <Route path="/recipes" element={<PageInDevelopment />} />
+              <Route path="/recipes" element={<RecipesPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/login" element={<Navigate to={new URLSearchParams(location.search).get('redirect') || "/"}/>} />
               <Route path="/signup" element={<Navigate to="/"/>} />

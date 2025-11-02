@@ -26,7 +26,7 @@ const IngredientsPageMain = (props: {ingredients: UserIngredient[], setIngredien
 
   if (dataLoadingStatus !== DataLoadingStatus.Loaded) return (
       <div className="empty-page">
-          <h3 className="empty-page-title">{dataLoadingStatus === DataLoadingStatus.Error? "Error loading your food log" : "Loading your food log..."}</h3>
+          <h3 className="empty-page-title">{dataLoadingStatus === DataLoadingStatus.Error? "Error loading your ingredients" : "Loading your ingredients..."}</h3>
       </div>
   );
 

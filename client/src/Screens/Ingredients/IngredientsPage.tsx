@@ -2,9 +2,9 @@ import React, {useState} from "react";
 import {Route, Routes} from "react-router-dom";
 import IngredientsPageMain from "./IngredientsList/IngredientsPageMain";
 import {PageNotFound} from "../HomeScreen/ErrorPages";
-import AddIngredientsPage from "./AddIngredientsPage";
+import AddIngredientsPage from "./AddIngredients/AddIngredientsPage";
 import {IngredientAISuggestionResp, UserIngredient} from "../../Utils/response-types";
-import RecognizeIngredientPage from "./RecognizeIngredient";
+import RecognizeIngredientPage from "./AddIngredients/RecognizeIngredient";
 
 const IngredientsPage: React.FC = () => {
     const [selectedIngredientTemplate, setSelectedIngredientTemplate] = useState<IngredientAISuggestionResp|undefined>(undefined);

@@ -21,7 +21,6 @@ export type IngredientAISuggestionResp = { name: string, portion_grams?: number,
 
 export type GetRecipesResp = { recipes: UserRecipe[], errorCode?: number };
 export type AddRecipeResp = { success: boolean, recipes: UserRecipe[], errorCode?: number };
-export type RecipeAISuggestionResp = { recipes: GeneratedRecipe[], errorCode?: number };
 
 
 export type Intolerance = {intolerance_id: number, intolerance_name: string};
@@ -29,6 +28,6 @@ export type UserProfile = { user_id: number, email: string, auth_provider: AuthP
 export type UserMeal = { meal_id: number, user_id: number, name: string, actual_calories?: number, actual_proteins?: number, actual_fats?: number, actual_carbs?: number, actual_portion_grams?: number, meal_time: MealTime, created_at: string, source_type: SourceType, [key: string]: string|number|MealTime|SourceType|undefined };
 export type UserIngredient = { ingredient_id: number, user_id: number, name: string, created_at: string, source_type: SourceType, quantity_available_grams: number, [key: string]: string|number|MealTime|SourceType|undefined };
 export type ProductTemplate = { product_id: number, name: string, default_calories?: number, default_proteins?: number, default_fats?: number, default_carbs?: number, default_portion_grams?: number, image_url?: string };
-export type UserRecipe = { recipe_id: number, user_id: number, name: string, ingredients: {name: string, amount: number, unit: string}[], instructions: string, calories: number, protein: number, fat: number, carbs: number, created_at: string };
-export type GeneratedRecipe = { name: string, ingredients: {name: string, amount: number, unit: string}[], instructions: string, calories: number, protein: number, fat: number, carbs: number };
+export type UserRecipe = { recipe_id: number, user_id: number, name: string, ingredients: RecipeIngredient[], instructions: string, calories: number, protein: number, fat: number, carbs: number, created_at: string, [key: string]: string|number|RecipeIngredient[]|undefined };
+export type RecipeIngredient = { name: string, amount: number, unit: string };
 export type StatisticsEntry = { calories: number, proteins: number, fats: number, carbs: number };
