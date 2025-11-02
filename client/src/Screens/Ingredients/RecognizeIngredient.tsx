@@ -1,11 +1,9 @@
-import "./FoodLog.css";
 import React, {useRef, useState} from "react";
-import {recognizeMeal} from "../../Utils/queries";
-import {MealTime, SourceType} from "../../Utils/enums";
+import {recognizeIngredient} from "../../Utils/queries";
 import {useNavigate} from "react-router-dom";
-import {FoodLogTemplate} from "./FoodLogTemplate";
+import {IngredientAISuggestionResp} from "../../Utils/response-types";
 
-const RecognizeMealPage = (props: {setSelectedTemplate: React.Dispatch<React.SetStateAction<FoodLogTemplate|undefined>>}) => {
+const RecognizeIngredientPage = (props: {setSelectedTemplate: React.Dispatch<React.SetStateAction<IngredientAISuggestionResp|undefined>>}) => {
   const navigate = useNavigate();
 
   const [file, setFile] = useState<File | null>(null);
@@ -27,16 +25,15 @@ const RecognizeMealPage = (props: {setSelectedTemplate: React.Dispatch<React.Set
         setStatus('uploading');
 
         try {
-            const response = await recognizeMeal(file.name, file);
+            const response = await recognizeIngredient(file.name, file);
 
             if (!response.errorCode) {
                 setFile(null);
                 setStatus('idle');
                 props.setSelectedTemplate({
-                    log_id: 0, meal_time: MealTime.Snack, source_type: SourceType.Photo,
-                    name: response.name, actual_calories: response.default_calories!, actual_proteins: response.default_proteins!, actual_fats: response.default_fats!, actual_carbs: response.default_carbs!, actual_portion_grams: response.default_portion_grams!
+                    name: response.name, portion_grams: response.portion_grams!
                 });
-                navigate('/foodlog/add');
+                navigate('/ingredients/add');
             } else {
                 const errorMsg = `Upload failed: ${
                     response.errorCode ? ` (Code: ${response.errorCode})` : ''
@@ -70,4 +67,4 @@ const RecognizeMealPage = (props: {setSelectedTemplate: React.Dispatch<React.Set
     );
 };
 
-export default RecognizeMealPage;
+export default RecognizeIngredientPage;

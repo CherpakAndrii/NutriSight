@@ -1,7 +1,7 @@
 import React, {useCallback, useState, useMemo} from "react";
 import { getFoodLogEntries } from "../../../Utils/queries";
 import {UserMeal} from "../../../Utils/response-types";
-import {DataLoadingStatus, MealTime, SourceType} from "../../../Utils/enums";
+import {DataLoadingStatus} from "../../../Utils/enums";
 import FoodLogEntryGroup from "./FoodLogEntryGroup";
 import {faCamera, faKeyboard, faMagnifyingGlassPlus} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -50,7 +50,7 @@ const FoodLogPageMain = (props: {setSelectedTemplate: React.Dispatch<React.SetSt
 
   if (dataLoadingStatus !== DataLoadingStatus.Loaded) return (
       <div className="empty-page">
-          <h3 className="empty-page-title">{dataLoadingStatus === DataLoadingStatus.Error? "Error loading your profile" : "Loading your profile..."}</h3>
+          <h3 className="empty-page-title">{dataLoadingStatus === DataLoadingStatus.Error? "Error loading your food log" : "Loading your food log..."}</h3>
       </div>
   );
 
