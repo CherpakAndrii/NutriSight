@@ -1,3 +1,4 @@
+import "./Recipe.css";
 import React, {useState} from "react";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faChevronDown, faChevronUp} from '@fortawesome/free-solid-svg-icons';
@@ -31,27 +32,27 @@ const RecipeEntry = (props: {recipe: UserRecipe, setRecipes: React.Dispatch<Reac
             </div>
             <div className="extendable-res-container" style={{display: extended ? "flex" : "none"}}>
                 {extended ? <>
-                    <div className="attribute-row" key="name">
+                    <div className="recipe-row" key="name">
                         <span className="attribute-label">Name</span>
                         <span className="attribute-value">
                           {props.recipe.name}
                         </span>
                     </div>
-                    <div className="attribute-row" key="ingredients">
+                    <div className="recipe-row" key="ingredients">
                         <span className="attribute-label">Ingredients</span>
                         <span className="attribute-value">
-                          {props.recipe.ingredients.map(i => `${i.name} -- ${i.amount} ${i.unit}`).join('\n')}
+                          {props.recipe.ingredients.map(i => <span>`${i.name} – ${i.amount} ${i.unit}`</span>)}
                         </span>
                     </div>
                     {['calories', 'protein', 'fat', 'carbs', 'instructions'].map(key => (
-                    <div className="attribute-row" key={key}>
+                    <div className="recipe-row" key={key}>
                         <span className="attribute-label">{capitalize(key)}</span>
                         <span className="attribute-value">
                           {props.recipe[key]?.toString()}
                         </span>
                     </div>
                 ))}
-                    <div className="attribute-row" key="created_at">
+                    <div className="recipe-row" key="created_at">
                         <span className="attribute-label">Created At</span>
                         <span className="attribute-value">
                           {props.recipe.created_at.replace('T', ' ').split('.')[0]}

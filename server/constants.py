@@ -13,7 +13,6 @@ VERIFY_EXPIRATION: int = int(os.getenv('VERIFY_EXPIRATION'))
 
 SERVER_PORT: int = int(os.getenv('SERVER_PORT'))
 SERVER_WORKERS: int = int(os.getenv('SERVER_WORKERS'))
-SERVER_BASE_URL: int = os.getenv('SERVER_BASE_URL')
 
 POSTGRES_USER: str = os.getenv('POSTGRES_USER')
 POSTGRES_PASSWORD: str = os.getenv('POSTGRES_PASSWORD')
@@ -30,6 +29,8 @@ GOOGLE_CLIENT_ID: str = os.getenv('GOOGLE_CLIENT_ID')
 GEMINI_API_KEY: str = os.getenv('GEMINI_API_KEY')
 
 DATABASE_URL: str = os.getenv('DATABASE_URL')
+
+NGROK_HOSTING_URL: str = os.getenv('NGROK_HOSTING_URL')
 
 
 log_dir = "data/logs"

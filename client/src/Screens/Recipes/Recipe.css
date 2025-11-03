@@ -1,0 +1,7 @@
+﻿.recipe-row {
+  display: flex;
+  justify-content: space-between;
+  background-color: #27354a;
+  padding: 10px 14px;
+  border-radius: 10px;
+}

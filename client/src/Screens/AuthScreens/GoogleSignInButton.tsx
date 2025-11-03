@@ -34,7 +34,7 @@ const GoogleLoginButton = (props: {setLogInStatus: React.Dispatch<React.SetState
     );
   }, [handleCredentialResponse]);
 
-  return <div id="google-signin-button"></div>;
+  return <div id="google-signin-button" style={{display: "flex", justifyContent: "center"}}></div>;
 };
 
 export default GoogleLoginButton;

@@ -1,10 +1,10 @@
 ﻿import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from constants import SMTP_USER, SMTP_PASSWORD, SMTP_SERVER, SMTP_PORT, SERVER_BASE_URL
+from constants import SMTP_USER, SMTP_PASSWORD, SMTP_SERVER, SMTP_PORT, NGROK_HOSTING_URL
 
 def send_verification_email(to_email: str, token: str):
-    verification_link = f"{SERVER_BASE_URL}verify/{token}" # TODO redirect to frontend that will do a post request
+    verification_link = f"https://{NGROK_HOSTING_URL}/verify/{token}"
     subject = "NutriSight: Verify your email"
     body = f"""
     <p>Hi!</p>

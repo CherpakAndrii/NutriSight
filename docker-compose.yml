@@ -26,6 +26,19 @@
     ports:
       - "5432:5432"
 
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: nutri_sight_ngrok
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN}
+    command: >
+      http --url=${NGROK_HOSTING_URL} http://backend:8005
+    ports:
+      - "4040:4040"
+
 volumes:
   nutri_sight_data_volume:
   postgres_data:
